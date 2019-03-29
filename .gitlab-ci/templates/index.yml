@@ -1,0 +1,4 @@
+include:
+  - ./docker-compose.stage.yml
+  - ./docker-kube.stage.yml
+  - ./docker.stage.yml

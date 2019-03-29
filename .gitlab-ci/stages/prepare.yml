@@ -1,0 +1,17 @@
+#
+
+.prepare_stage: &prepare_stage
+  stage: "Prepare"
+
+#
+
+Prepare socialgouv/cdtn base image:
+  <<: *prepare_stage
+  extends: .docker_stage
+  before_script:
+  - docker login $CI_REGISTRY -u gitlab-ci-token -p $CI_JOB_TOKEN
+  script:
+  - echo "Build $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA from $CI_REGISTRY_IMAGE:$CI_COMMIT_BEFORE_SHA"
+  - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_BEFORE_SHA -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA" .
+  - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+

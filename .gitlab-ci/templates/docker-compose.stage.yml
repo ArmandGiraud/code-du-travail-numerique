@@ -1,0 +1,4 @@
+.docker-compose-stage:
+  image: docker:$DOCKER_VERSION
+  services:
+  - docker:dind

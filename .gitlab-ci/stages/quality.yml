@@ -1,0 +1,105 @@
+#
+
+.quality_stage: &quality_stage
+  stage: "Code Quality"
+
+.master_based_stage: &master_based_stage
+  variables:
+    GIT_STRATEGY: none
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  before_script:
+    - cd /app
+
+.python_based_stage: &python_based_stage
+  image: python:$PYTHON_VERSION
+  variables:
+    PIPENV_VENV_IN_PROJECT: 1
+    PIPENV_IGNORE_VIRTUALENVS: 1
+    PYTHONPATH: .
+
+#
+
+Lint @cdtn/api:
+  <<: *quality_stage
+  <<: *master_based_stage
+  script:
+    - yarn workspace @cdt/api lint
+
+Lint @cdtn/ui:
+  <<: *quality_stage
+  <<: *master_based_stage
+  script:
+    - yarn workspace @cdt/ui lint
+
+Lint @cdtn/frontend:
+  <<: *quality_stage
+  <<: *master_based_stage
+  script:
+    - yarn workspace @cdt/frontend lint
+
+Lint @cdtn/data:
+  <<: *quality_stage
+  <<: *python_based_stage
+  services:
+    - docker:dind
+  before_script:
+    - cd packages/code-du-travail-data
+    - apk add build-base
+    - pip install --upgrade pip
+    - pip install pipenv==$PIP_VERSION
+    - pipenv install --dev --three
+  script:
+    - pipenv run pylint --output-format=colorized search
+
+#
+
+Test @cdtn/frontend:
+  <<: *quality_stage
+  <<: *master_based_stage
+  script:
+    - yarn workspace @cdt/frontend test --coverage
+  after_script:
+    - npx codecov
+
+Test @cdtn/api:
+  <<: *quality_stage
+  extends: .docker_compose_stage
+  before_script:
+    # NOTE(douglasduteil): detached starts must be first
+    # As we start elasticsearch in the background, putting it first will give it
+    # time to be up during the docker pull ;)
+    - docker-compose up -d elasticsearch
+
+    - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+
+    # NOTE(douglasduteil): the elasticsearch health check must be last
+    # As we block the job waiting for elasticsearch to be up.
+    - >-
+      retry=0;
+      while ! curl "http://localhost:9200/_cat/health?h=status" && (( $retry <= 60 )) ;
+        do sleep 1; ((retry++)); done;
+  script:
+    - >-
+      docker run
+      -v $PWD/packages/code-du-travail-api/coverage:/app/packages/code-du-travail-api/coverage
+      -e ELASTICSEARCH_URL=http://elasticsearch:9200
+      -e ELASTICSEARCH_LOG_LEVEL=info
+      --network $(docker network ls -qf name=code)
+      "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+      yarn workspace @cdt/api test --coverage
+  after_script:
+    - npx codecov
+
+Test @cdtn/data:
+  <<: *quality_stage
+  <<: *python_based_stage
+  services:
+    - docker:dind
+  before_script:
+    - cd packages/code-du-travail-data
+    - apk add build-base
+    - pip install --upgrade pip
+    - pip install pipenv==$PIP_VERSION
+    - pipenv install --dev
+  script:
+    - pipenv run python search/indexing/document_slug_checker.py -v
