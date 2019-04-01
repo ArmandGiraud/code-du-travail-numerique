@@ -76,7 +76,6 @@ Test @cdtn/api:
   variables:
     DOCKER_ARGS: |-
       -v $PWD/packages/code-du-travail-api/coverage:/app/packages/code-du-travail-api/coverage
-      --network $(docker network ls -qf name=code)
       "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
     ELASTICSEARCH_URL: http://elasticsearch:9200
     ELASTICSEARCH_LOG_LEVEL: info
@@ -86,8 +85,7 @@ Test @cdtn/api:
     # time to be up during the docker pull ;)
     - docker-compose up -d elasticsearch
 
-    - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
-    - echo $DOCKER_ARGS
+    - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA" | grep -v -E 'Waiting|Layer already|Preparing'
 
     # NOTE(douglasduteil): the elasticsearch health check must be last
     # As we block the job waiting for elasticsearch to be up.
@@ -95,12 +93,15 @@ Test @cdtn/api:
       set -xeo pipefail;
       echo;
       apk add --no-cache ca-certificates curl;
-      retry=0;
-      while ! curl "http://localhost:9200/_cat/health?h=status" && \
-      (( $retry <= 60 )) ; do sleep 1; ((retry++)); done;
+      echo;
+      curl "http://localhost:9200/_cat/health?h=status"
+      echo;
       set +x;
   script:
-    - docker run $DOCKER_ARGS yarn workspace @cdt/api test --coverage
+    - |-
+      docker run $DOCKER_ARGS
+        --network $(docker network ls -qf name=code)
+        yarn workspace @cdt/api test --coverage
   after_script:
     - docker run $DOCKER_ARGS npx codecov
 
