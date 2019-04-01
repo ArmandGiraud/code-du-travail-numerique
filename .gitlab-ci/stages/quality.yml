@@ -84,10 +84,7 @@ Test @cdtn/api:
 
     - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
     - |-
-      alias docker-run=docker run
-      -v $PWD/packages/code-du-travail-api/coverage:/app/packages/code-du-travail-api/coverage
-      --network $(docker network ls -qf name=code)
-      "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+      alias docker-run='docker run'
 
     # NOTE(douglasduteil): the elasticsearch health check must be last
     # As we block the job waiting for elasticsearch to be up.
