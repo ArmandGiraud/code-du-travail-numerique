@@ -1,9 +1,13 @@
 .docker_stage:
   image: docker:$DOCKER_VERSION
+  cache:
+    untracked: true
   services:
   - docker:dind
 
 .docker_compose_stage:
   image: docker/compose:$DOCKER_COMPOSE_VERSION
+  cache:
+    untracked: true
   services:
     - docker:dind

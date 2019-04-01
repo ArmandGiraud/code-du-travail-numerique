@@ -94,7 +94,7 @@ Test @cdtn/api:
     - >-
       set -xeo pipefail;
       echo;
-      apk add --no-cache ca-certificates curl; #
+      apk add --no-cache ca-certificates curl;
       retry=0;
       while ! curl "http://localhost:9200/_cat/health?h=status" && \
       (( $retry <= 60 )) ; do sleep 1; ((retry++)); done;
