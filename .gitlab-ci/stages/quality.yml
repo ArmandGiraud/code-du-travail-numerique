@@ -84,7 +84,7 @@ Test @cdtn/api:
     # NOTE(douglasduteil): the elasticsearch health check must be last
     # As we block the job waiting for elasticsearch to be up.
     - >-
-      set -x;
+      set -xe;
       retry=0;
       while ! curl "http://localhost:9200/_cat/health?h=status" && (( $retry <= 60 )) ;
         do sleep 1; ((retry++)); done;
