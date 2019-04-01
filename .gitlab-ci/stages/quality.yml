@@ -2,6 +2,7 @@
 
 .quality_stage: &quality_stage
   stage: "Code Quality"
+  dependencies: []
 
 .master_based_stage: &master_based_stage
   variables:
@@ -67,6 +68,11 @@ Test @cdtn/frontend:
 Test @cdtn/api:
   <<: *quality_stage
   extends: .docker_compose_stage
+  dependencies:
+    - Prepare .env file
+  variables:
+    ELASTICSEARCH_URL: http://elasticsearch:9200
+    ELASTICSEARCH_LOG_LEVEL: info
   before_script:
     # NOTE(douglasduteil): detached starts must be first
     # As we start elasticsearch in the background, putting it first will give it
@@ -85,8 +91,6 @@ Test @cdtn/api:
     - >-
       docker run
       -v $PWD/packages/code-du-travail-api/coverage:/app/packages/code-du-travail-api/coverage
-      -e ELASTICSEARCH_URL=http://elasticsearch:9200
-      -e ELASTICSEARCH_LOG_LEVEL=info
       --network $(docker network ls -qf name=code)
       "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
       yarn workspace @cdt/api test --coverage

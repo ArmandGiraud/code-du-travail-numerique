@@ -2,6 +2,7 @@
 
 .prepare_stage: &prepare_stage
   stage: "Prepare"
+  dependencies: []
 
 #
 
@@ -15,3 +16,11 @@ Prepare socialgouv/cdtn base image:
   - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_BEFORE_SHA -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA" .
   - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
 
+prepare .env file:
+  stage: "Prepare"
+  image: node:10-alpine
+  script:
+  - node scripts/setup-env.js
+  artifacts:
+    paths:
+    - .env
