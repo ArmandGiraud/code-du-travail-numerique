@@ -23,7 +23,7 @@
   before_script: &python_based_install_step |-
     set -xeo pipefail;
     echo;
-    apk add build-base;
+    apk add --no-cache build-base;
     pip install --upgrade pip;
     pip install pipenv==$PIP_VERSION;
     pipenv install --dev;
@@ -89,6 +89,7 @@ Test @cdtn/api:
     - >-
       set -xeo pipefail;
       echo;
+      apk add --no-cache ca-certificates curl; #
       retry=0;
       while ! curl "http://localhost:9200/_cat/health?h=status" && (( $retry <= 60 )) ;
         do sleep 1; ((retry++)); done;
