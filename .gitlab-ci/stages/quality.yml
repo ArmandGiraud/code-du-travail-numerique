@@ -85,7 +85,7 @@ Test @cdtn/api:
     - apk update && apk add --no-cache curl docker
 
     # use previews build as cache
-    - docker run $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHA
+    - docker run -d $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHA
 
     # NOTE(douglasduteil): the elasticsearch health check must be last
     # As we block the job waiting for elasticsearch to be up.
