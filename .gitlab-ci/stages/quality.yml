@@ -71,6 +71,8 @@ Test @cdtn/frontend:
 Test @cdtn/api:
   <<: *quality_stage
   <<: *master_based_stage
+  services:
+    - docker:dind
   dependencies:
     - Prepare .env file
   variables:
