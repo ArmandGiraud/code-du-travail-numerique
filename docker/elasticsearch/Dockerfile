@@ -1,6 +1,6 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch:6.4.2
 
-RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install -q analysis-icu
+RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch analysis-icu
 
 COPY ./elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
 
