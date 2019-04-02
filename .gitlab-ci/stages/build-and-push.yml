@@ -21,14 +21,12 @@ Register elasticsearch image:
 
 Register api image:
   <<: *build_and_push_stage
-  script:
-    - >-
-      docker build
+  variables:
+    CONTEXT: packages/code-du-travail-api
+    DOCKER_BUILD_ARGS: >-
       --build-arg REGISTRY=$CI_REGISTRY_IMAGE
       --build-arg TAG_BASE_IMAGE=$CI_COMMIT_SHA
-      -t "$CI_REGISTRY_IMAGE/api:$CI_COMMIT_SHA"
-      packages/code-du-travail-api
-    - docker push "$CI_REGISTRY_IMAGE/api:$CI_COMMIT_SHA"
+    IMAGE_TAG: $CI_REGISTRY_IMAGE/api:$CI_COMMIT_SHA
 
 Register frontend image:
   <<: *build_and_push_stage
