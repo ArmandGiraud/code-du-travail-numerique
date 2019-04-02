@@ -84,7 +84,9 @@ Test @cdtn/api:
     # NOTE(douglasduteil): copy "Prepare .env file" artifacts
     - ls -al /
     - ls -al /SocialGouv/code-du-travail-numerique
-    - cp /SocialGouv/code-du-travail-numerique/{.env,docker-compose.yml,docker-compose.override.yml} /app
+    - cp /SocialGouv/code-du-travail-numerique/.env /app
+    - cp /SocialGouv/code-du-travail-numerique/docker-compose.yml /app
+    - cp /SocialGouv/code-du-travail-numerique/docker-compose.override.yml /app
 
     # Install docker compose
     - apk update && apk add --no-cache bash py-pip openssl
