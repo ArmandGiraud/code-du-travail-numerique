@@ -81,23 +81,22 @@ Test @cdtn/api:
   before_script:
     # NOTE(douglasduteil): required inside the *master_based_stage
     - cd /app
+
     # NOTE(douglasduteil): copy "Prepare .env file" artifacts
-    - ls -al /
-    - ls -al /SocialGouv/code-du-travail-numerique
     - cp /SocialGouv/code-du-travail-numerique/.env /app
     - cp /SocialGouv/code-du-travail-numerique/docker-compose.yml /app
     - cp /SocialGouv/code-du-travail-numerique/docker-compose.override.yml /app
 
     # Install docker compose
-    - apk update && apk add --no-cache bash py-pip openssl
+    - apk update && apk add --no-cache bash curl py-pip openssl
     - pip install docker-compose==${DOCKER_COMPOSE_VERSION}
 
-    # NOTE(douglasduteil): detached starts must be first
-    # As we start elasticsearch in the background, putting it first will give it
-    # time to be up during the docker pull ;)
     - docker-compose up -d elasticsearch
 
-    - curl "http://localhost:9200/_cat/health?h=status"
+    # NOTE(douglasduteil): the elasticsearch health check must be last
+    # As we block the job waiting for elasticsearch to be up.
+    - retry=60; while ! curl "http://localhost:9200/_cat/health?h=status" && [[ $((
+retry-- )) -gt 0 ]]; do sleep 1 ; done ;
   script:
     - yarn workspace @cdt/api test --coverage
   after_script:
