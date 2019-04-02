@@ -85,7 +85,7 @@ Test @cdtn/api:
     - apk update && apk add --no-cache curl docker
 
     # use previews build as cache
-    - docker run -d $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHA
+    - docker run --name elasticsearch --rm -d $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHA
 
     # NOTE(douglasduteil): the elasticsearch health check must be last
     # As we block the job waiting for elasticsearch to be up.
@@ -95,7 +95,8 @@ Test @cdtn/api:
         ! curl -sS "$ELASTICSEARCH_URL/_cat/health?h=status" &&
         [[ $(( retry-- )) -gt 0 ]];
       do echo "Waiting for Elasticsearch to go Green ($retry)" ; sleep 1 ; done ;
-    - docker-compose logs --tail=10 elasticsearch
+    - docker logs --tail=10 elasticsearch
+    - curl -sS "$ELASTICSEARCH_URL/_cat/health?h=status"
   script:
     - yarn workspace @cdt/api test --coverage
   after_script:
