@@ -78,7 +78,7 @@ Test @cdtn/api:
     ELASTICSEARCH_LOG_LEVEL: info
   before_script:
     # Install docker compose
-    - apk update && apk add --no-cache bash py-pip openssl
+    - apk update && apk add --no-cache bash docker py-pip openssl
     - pip install docker-compose==${DOCKER_COMPOSE_VERSION}
 
     # NOTE(douglasduteil): detached starts must be first
