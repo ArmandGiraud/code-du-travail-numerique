@@ -12,14 +12,14 @@
 
 #
 
-Build and Push socialgouv/code-du-travail-numerique/elasticsearch image:
+Register elasticsearch image:
   <<: *build_and_push_stage
   variables:
-    CONTEXT: /app
+    CONTEXT: docker/elasticsearch
     DOCKER_BUILD_ARGS: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHA
 
-Build and Push socialgouv/code-du-travail-numerique/api image:
+Register api image:
   <<: *build_and_push_stage
   script:
     - >-
@@ -30,7 +30,7 @@ Build and Push socialgouv/code-du-travail-numerique/api image:
       packages/code-du-travail-api
     - docker push "$CI_REGISTRY_IMAGE/api:$CI_COMMIT_SHA"
 
-Build and Push socialgouv/code-du-travail-numerique/frontend image:
+Register frontend image:
   <<: *build_and_push_stage
   script:
     - >-
@@ -41,7 +41,7 @@ Build and Push socialgouv/code-du-travail-numerique/frontend image:
       packages/code-du-travail-frontend
     - docker push "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA"
 
-Build and Push socialgouv/code-du-travail-numerique/data image:
+Register data image:
   <<: *build_and_push_stage
   script:
     - >-
