@@ -85,7 +85,7 @@ Test @cdtn/api:
     - cd /app
 
     # Install docker compose
-    - apk update && apk add --no-cache bash curl py-pip openssl
+    - apk update && apk add --no-cache bash curl docker py-pip openssl
     - pip install docker-compose==${DOCKER_COMPOSE_VERSION}
 
     # use previews build as cache
