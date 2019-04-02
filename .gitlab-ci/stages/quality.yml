@@ -80,7 +80,7 @@ Test @cdtn/api:
     ELASTICSEARCH_LOG_LEVEL: info
   before_script:
     # Install docker compose
-    - apk update && apk add --no-cache bash "docker=${DOCKER_VERSION}" py-pip openssl
+    - apk update && apk add --no-cache bash "docker>${DOCKER_VERSION}" py-pip openssl
     - docker --version
     - docker ps
     - pip install docker-compose==${DOCKER_COMPOSE_VERSION}
