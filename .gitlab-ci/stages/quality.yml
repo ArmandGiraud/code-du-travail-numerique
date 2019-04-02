@@ -7,9 +7,9 @@
 .master_based_stage: &master_based_stage
   variables:
     CI_PROJECT_DIR: /app
-    GIT_STRATEGY: none
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   before_script:
+    - cp /SocialGouv/code-du-travail-numerique/.git
     - cd /app
 
 .python_based_stage: &python_based_stage
@@ -81,6 +81,7 @@ Test @cdtn/api:
     ELASTICSEARCH_LOG_LEVEL: info
   before_script:
     # NOTE(douglasduteil): required inside the *master_based_stage
+    - cp /SocialGouv/code-du-travail-numerique/.git /app
     - cd /app
 
     # NOTE(douglasduteil): copy "Prepare .env file" artifacts
