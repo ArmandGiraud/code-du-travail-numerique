@@ -1,3 +1,7 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch:6.4.2
 
 RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install analysis-icu
+
+COPY ./elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
