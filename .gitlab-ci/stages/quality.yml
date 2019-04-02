@@ -106,7 +106,7 @@ Test @cdtn/api:
   script:
     - yarn workspace @cdt/api test --coverage
   after_script:
-    - CI_PROJECT_DIR=/app CI_PROJECT_DIRnpx codecov
+    - CI_PROJECT_DIR=/app npx codecov
 
 Test @cdtn/data:
   <<: *quality_stage
