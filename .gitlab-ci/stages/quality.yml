@@ -98,9 +98,9 @@ Test @cdtn/api:
     - |-
       retry=60;
       while
-        ! curl "http://localhost:9200/_cat/health?h=status" &&
+        ! curl -sS "http://localhost:9200/_cat/health?h=status" &&
         [[ $(( retry-- )) -gt 0 ]];
-      do sleep 1 ; done ;
+      do echo "Waiting for Elasticsearch to go Green ($retry)" ; sleep 1 ; done ;
   script:
     - yarn workspace @cdt/api test --coverage
   after_script:
