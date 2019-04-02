@@ -67,7 +67,7 @@ Test @cdtn/frontend:
   script:
     - yarn workspace @cdt/frontend test --coverage
   after_script:
-    - npx codecov
+    - CI_PROJECT_DIR=/app npx codecov -F frontend
 
 Test @cdtn/api:
   <<: *quality_stage
