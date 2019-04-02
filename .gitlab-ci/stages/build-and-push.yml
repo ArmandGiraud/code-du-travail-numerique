@@ -7,8 +7,14 @@
   before_script:
     - docker login $CI_REGISTRY -u gitlab-ci-token -p $CI_JOB_TOKEN
   script:
-    - docker build $DOCKER_BUILD_ARGS -t $IMAGE_TAG $CONTEXT
-    - docker push $IMAGE_TAG
+    - docker pull $IMAGE_NAME:$CI_COMMIT_BEFORE_SHA || true
+    - |-
+      docker build
+        $DOCKER_BUILD_ARGS
+        --cache-from $IMAGE_NAME:$CI_COMMIT_BEFORE_SHA
+        -t $IMAGE_NAME:$CI_COMMIT_SHA
+        $CONTEXT
+    - docker push $IMAGE_NAME
 
 #
 
@@ -17,7 +23,7 @@ Register elasticsearch image:
   variables:
     CONTEXT: docker/elasticsearch
     DOCKER_BUILD_ARGS: ""
-    IMAGE_TAG: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHA
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/elasticsearch
 
 Register api image:
   <<: *build_and_push_stage
@@ -26,24 +32,20 @@ Register api image:
     DOCKER_BUILD_ARGS: >-
       --build-arg REGISTRY=$CI_REGISTRY_IMAGE
       --build-arg TAG_BASE_IMAGE=$CI_COMMIT_SHA
-    IMAGE_TAG: $CI_REGISTRY_IMAGE/api:$CI_COMMIT_SHA
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/api
 
 Register frontend image:
   <<: *build_and_push_stage
-  script:
-    - >-
-      docker build
+  variables:
+    CONTEXT: packages/code-du-travail-frontend
+    DOCKER_BUILD_ARGS: >-
       --build-arg REGISTRY=$CI_REGISTRY_IMAGE
       --build-arg TAG_BASE_IMAGE=$CI_COMMIT_SHA
-      -t "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA"
-      packages/code-du-travail-frontend
-    - docker push "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA"
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/frontend
 
 Register data image:
   <<: *build_and_push_stage
-  script:
-    - >-
-      docker build
-      -t "$CI_REGISTRY_IMAGE/data:$CI_COMMIT_SHA"
-      packages/code-du-travail-data
-    - docker push "$CI_REGISTRY_IMAGE/data:$CI_COMMIT_SHA"
+  variables:
+    CONTEXT: packages/code-du-travail-data
+    DOCKER_BUILD_ARGS: ""
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/data
