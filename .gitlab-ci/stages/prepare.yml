@@ -26,3 +26,5 @@ Prepare .env file:
   artifacts:
     paths:
     - .env
+    - docker-compose.yml
+    - docker-compose.override.yml

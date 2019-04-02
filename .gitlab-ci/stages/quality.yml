@@ -81,6 +81,8 @@ Test @cdtn/api:
   before_script:
     # NOTE(douglasduteil): required inside the *master_based_stage
     - cd /app
+    # NOTE(douglasduteil): copy "Prepare .env file" artifacts
+    - cp /SocialGouv/code-du-travail-numerique/{.env,docker-compose.yml,docker-compose.override.yml} /app
 
     # Install docker compose
     - apk update && apk add --no-cache bash py-pip openssl
