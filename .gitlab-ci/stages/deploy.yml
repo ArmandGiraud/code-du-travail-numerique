@@ -4,6 +4,8 @@
   extends: .deploy-elasticsearch-dev-k8s
   stage: "Deploy EL Stack"
   dependencies: []
+  services:
+    - docker:dind
   variables:
     K8S_SERVER: $K8S_SERVER_DEV
     K8S_CLUSTER_NAME: $K8S_CLUSTER_NAME_DEV
