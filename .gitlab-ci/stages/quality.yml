@@ -87,6 +87,7 @@ Test @cdtn/api:
     - cp /SocialGouv/code-du-travail-numerique/.env /app
     - cp /SocialGouv/code-du-travail-numerique/docker-compose.yml /app
     - cp /SocialGouv/code-du-travail-numerique/docker-compose.override.yml /app
+    - cp /SocialGouv/code-du-travail-numerique/codecov.yml /app
 
     # Install docker compose
     - apk update && apk add --no-cache bash curl py-pip openssl
@@ -105,7 +106,7 @@ Test @cdtn/api:
   script:
     - yarn workspace @cdt/api test --coverage
   after_script:
-    - CI_PROJECT_DIR=/app npx codecov
+    - CI_PROJECT_DIR=/app npx codecov -F api
 
 Test @cdtn/data:
   <<: *quality_stage
