@@ -97,8 +97,11 @@ Test @cdtn/api:
     - apk update && apk add --no-cache bash curl py-pip openssl
     - pip install docker-compose==${DOCKER_COMPOSE_VERSION}
 
-    - docker load -i elasticsearch-image.tar
+    # NOTE(douglasduteil): try to load cached elasticsearch image
+    - docker load -i elasticsearch-image.tar || true
+
     - docker-compose up -d elasticsearch
+
     - docker save docker.elastic.co/elasticsearch/elasticsearch > elasticsearch-image.tar
 
     # NOTE(douglasduteil): the elasticsearch health check must be last
