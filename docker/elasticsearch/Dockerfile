@@ -4,4 +4,3 @@ RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install --silent analysis-
 
 COPY ./elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

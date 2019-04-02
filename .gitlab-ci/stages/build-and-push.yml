@@ -13,13 +13,6 @@
 
 #
 
-Register elasticsearch image:
-  <<: *build_and_push_stage
-  variables:
-    CONTEXT: docker/elasticsearch
-    DOCKER_BUILD_ARGS: ""
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/elasticsearch
-
 Register api image:
   <<: *build_and_push_stage
   variables:

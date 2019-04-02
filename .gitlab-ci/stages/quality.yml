@@ -74,23 +74,18 @@ Test @cdtn/api:
   <<: *master_based_stage
   services:
     - docker:dind
-  dependencies:
-    - Prepare .env file
   variables:
     ELASTICSEARCH_URL: http://localhost:9200
     ELASTICSEARCH_LOG_LEVEL: info
   before_script:
     # NOTE(douglasduteil): required inside the *master_based_stage
-    - pwd
     - cd /app
 
     # Install docker compose
-    - apk update && apk add --no-cache bash curl docker py-pip openssl
-    - pip install docker-compose==${DOCKER_COMPOSE_VERSION}
+    - apk update && apk add --no-cache curl docker
 
     # use previews build as cache
-    - docker pull $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_BEFORE_SHA || true
-    - docker-compose up -d elasticsearch
+    - docker run $CI_REGISTRY_IMAGE/elasticsearch:CI_COMMIT_SHA
 
     # NOTE(douglasduteil): the elasticsearch health check must be last
     # As we block the job waiting for elasticsearch to be up.
