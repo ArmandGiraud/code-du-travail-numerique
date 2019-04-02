@@ -16,7 +16,7 @@ Build and Push socialgouv/code-du-travail-numerique/elasticsearch image:
   <<: *build_and_push_stage
   variables:
     CONTEXT: /app
-    DOCKER_BUILD_ARGS:
+    DOCKER_BUILD_ARGS: ""
     IMAGE_TAG: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHA
 
 Build and Push socialgouv/code-du-travail-numerique/api image:
