@@ -83,11 +83,6 @@ Test @cdtn/api:
     # NOTE(douglasduteil): required inside the *master_based_stage
     - cd /app
 
-    # NOTE(douglasduteil): copy "Prepare .env file" artifacts
-    - cp /SocialGouv/code-du-travail-numerique/.env /app
-    - cp /SocialGouv/code-du-travail-numerique/docker-compose.yml /app
-    - cp /SocialGouv/code-du-travail-numerique/codecov.yml /app
-
     # Install docker compose
     - apk update && apk add --no-cache bash curl py-pip openssl
     - pip install docker-compose==${DOCKER_COMPOSE_VERSION}
