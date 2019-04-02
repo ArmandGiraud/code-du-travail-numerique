@@ -28,4 +28,3 @@ Prepare .env file:
     - .env
     - codecov.yml
     - docker-compose.yml
-    - docker-compose.override.yml

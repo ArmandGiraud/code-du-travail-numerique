@@ -86,7 +86,6 @@ Test @cdtn/api:
     # NOTE(douglasduteil): copy "Prepare .env file" artifacts
     - cp /SocialGouv/code-du-travail-numerique/.env /app
     - cp /SocialGouv/code-du-travail-numerique/docker-compose.yml /app
-    - cp /SocialGouv/code-du-travail-numerique/docker-compose.override.yml /app
     - cp /SocialGouv/code-du-travail-numerique/codecov.yml /app
 
     # Install docker compose
