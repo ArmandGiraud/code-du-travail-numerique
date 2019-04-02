@@ -75,7 +75,7 @@ Test @cdtn/api:
   services:
     - docker:dind
   variables:
-    ELASTICSEARCH_URL: http://localhost:9200
+    ELASTICSEARCH_URL: http://localhost:$ELASTICSEARCH_PORT
     ELASTICSEARCH_LOG_LEVEL: info
   before_script:
     # NOTE(douglasduteil): required inside the *master_based_stage
@@ -85,14 +85,14 @@ Test @cdtn/api:
     - apk update && apk add --no-cache curl docker
 
     # use previews build as cache
-    - docker run $CI_REGISTRY_IMAGE/elasticsearch:CI_COMMIT_SHA
+    - docker run $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHA
 
     # NOTE(douglasduteil): the elasticsearch health check must be last
     # As we block the job waiting for elasticsearch to be up.
     - |-
       retry=60;
       while
-        ! curl -sS "http://localhost:9200/_cat/health?h=status" &&
+        ! curl -sS "$ELASTICSEARCH_URL/_cat/health?h=status" &&
         [[ $(( retry-- )) -gt 0 ]];
       do echo "Waiting for Elasticsearch to go Green ($retry)" ; sleep 1 ; done ;
     - docker-compose logs --tail=10 elasticsearch
