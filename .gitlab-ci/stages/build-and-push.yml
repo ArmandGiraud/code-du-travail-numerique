@@ -1,0 +1,48 @@
+#
+
+.build_and_push_stage: &build_and_push_stage
+  extends: .docker_stage
+  stage: "Build and Push Docker Image"
+  dependencies: []
+  before_script:
+    - docker login $CI_REGISTRY -u gitlab-ci-token -p $CI_JOB_TOKEN
+  script:
+    - docker build $DOCKER_BUILD_ARGS -t $IMAGE_TAG $CONTEXT
+    - docker push "$CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHA"
+
+#
+
+Build and Push socialgouv/code-du-travail-numerique/elasticsearch image:
+  <<: *build_and_push_stage
+  variables:
+    CONTEXT: /app
+    DOCKER_BUILD_ARGS:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHA
+
+Build and Push socialgouv/code-du-travail-numerique/api image:
+  script:
+    - >-
+      docker build
+      --build-arg REGISTRY=$CI_REGISTRY_IMAGE
+      --build-arg TAG_BASE_IMAGE=$CI_COMMIT_SHA
+      -t "$CI_REGISTRY_IMAGE/api:$CI_COMMIT_SHA"
+      packages/code-du-travail-api
+    - docker push "$CI_REGISTRY_IMAGE/api:$CI_COMMIT_SHA"
+
+Build and Push socialgouv/code-du-travail-numerique/frontend image:
+  script:
+    - >-
+      docker build
+      --build-arg REGISTRY=$CI_REGISTRY_IMAGE
+      --build-arg TAG_BASE_IMAGE=$CI_COMMIT_SHA
+      -t "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA"
+      packages/code-du-travail-frontend
+    - docker push "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA"
+
+Build and Push socialgouv/code-du-travail-numerique/data image:
+  script:
+    - >-
+      docker build
+      -t "$CI_REGISTRY_IMAGE/data:$CI_COMMIT_SHA"
+      packages/code-du-travail-data
+    - docker push "$CI_REGISTRY_IMAGE/data:$CI_COMMIT_SHA"
