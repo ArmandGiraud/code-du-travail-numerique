@@ -6,6 +6,7 @@
 
 .master_based_stage: &master_based_stage
   variables:
+    CI_PROJECT_DIR: /app
     GIT_STRATEGY: none
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   before_script:
