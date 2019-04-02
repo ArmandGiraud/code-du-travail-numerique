@@ -81,8 +81,6 @@ Test @cdtn/api:
   before_script:
     # Install docker compose
     - apk update && apk add --no-cache bash py-pip openssl
-    - docker --version
-    - docker ps
     - pip install docker-compose==${DOCKER_COMPOSE_VERSION}
 
     # NOTE(douglasduteil): detached starts must be first
@@ -90,15 +88,6 @@ Test @cdtn/api:
     # time to be up during the docker pull ;)
     - docker-compose up -d elasticsearch
 
-    # NOTE(douglasduteil): the elasticsearch health check must be last
-    # As we block the job waiting for elasticsearch to be up.
-    - >-
-      set -xeo pipefail;
-      echo;
-      apk add --no-cache ca-certificates curl;
-      retry=0;
-      while ! curl "http://localhost:9200/_cat/health?h=status" ; do sleep 1; iOIOIJOI  done;
-      set +x;
   script:
     - yarn workspace @cdt/api test --coverage
   after_script:
