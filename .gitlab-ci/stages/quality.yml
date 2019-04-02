@@ -74,10 +74,6 @@ Test @cdtn/api:
   <<: *master_based_stage
   services:
     - docker:dind
-  cache:
-    key: $CI_COMMIT_REF_SLUG
-    paths:
-      - elasticsearch-image.tar
   dependencies:
     - Prepare .env file
   variables:
@@ -97,12 +93,7 @@ Test @cdtn/api:
     - apk update && apk add --no-cache bash curl py-pip openssl
     - pip install docker-compose==${DOCKER_COMPOSE_VERSION}
 
-    # NOTE(douglasduteil): try to load cached elasticsearch image
-    - docker load -i elasticsearch-image.tar || true
-
     - docker-compose up -d elasticsearch
-
-    - docker save docker.elastic.co/elasticsearch/elasticsearch > elasticsearch-image.tar
 
     # NOTE(douglasduteil): the elasticsearch health check must be last
     # As we block the job waiting for elasticsearch to be up.
