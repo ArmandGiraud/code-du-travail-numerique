@@ -9,7 +9,7 @@
     CI_PROJECT_DIR: /app
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   before_script:
-    - cp /SocialGouv/code-du-travail-numerique/.git
+    - cp -r /SocialGouv/code-du-travail-numerique/.git /app
     - cd /app
 
 .python_based_stage: &python_based_stage
