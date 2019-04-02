@@ -4,9 +4,14 @@ include:
   - /.gitlab-ci/variables.yml
   - /.gitlab-ci/templates/docker.stage.yml
   #
+  - /k8s/elasticsearch/.deploy-elasticsearch-k8s.yml
+  #
   - /.gitlab-ci/stages/prepare.yml
   - /.gitlab-ci/stages/quality.yml
   - /.gitlab-ci/stages/build-and-push.yml
+  - /.gitlab-ci/stages/deploy.yml
+  #
+
 
 #
 

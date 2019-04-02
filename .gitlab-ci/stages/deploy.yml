@@ -1,0 +1,31 @@
+#
+
+.deploy_stage: &deploy_stage
+  extends: .deploy-elasticsearch-dev-k8s
+  stage: "Deploy EL Stack"
+  dependencies: []
+  variables:
+    K8S_SERVER: $K8S_SERVER_DEV
+    K8S_CLUSTER_NAME: $K8S_CLUSTER_NAME_DEV
+    K8S_NAMESPACE: $K8S_NAMESPACE_DEV
+    K8S_USERNAME: $K8S_USERNAME_DEV
+    K8S_CONTEXT: $K8S_CONTEXT_DEV
+    K8S_TOKEN: $K8S_TOKEN_DEV
+    IMAGE_TAG: $CI_COMMIT_SHA
+  before_script:
+    - docker login $CI_REGISTRY -u gitlab-ci-token -p $CI_JOB_TOKEN
+  script:
+    - docker pull $IMAGE_NAME:$CI_COMMIT_BEFORE_SHA || true
+    - docker build $DOCKER_BUILD_ARGS --cache-from $IMAGE_NAME:$CI_COMMIT_BEFORE_SHA -t $IMAGE_NAME:$CI_COMMIT_SHA $CONTEXT
+    - docker push $IMAGE_NAME
+
+#
+
+Deploy Elasticsearch:
+  <<: *deploy_stage
+  variables:
+    ES_PORT: $ELASTICSEARCH_PORT
+    ES_INTER_NODE: $ELASTICSEARCH_INTER_NODE_PORT
+    CDTN_REGISTRY: $CI_REGISTRY_IMAGE
+  except:
+    - master

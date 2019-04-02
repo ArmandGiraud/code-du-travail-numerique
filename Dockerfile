@@ -34,3 +34,4 @@ RUN yarn build
 #
 
 COPY ./docker /app/docker
+COPY ./docker-compose.yml /app/docker-compose.yml
