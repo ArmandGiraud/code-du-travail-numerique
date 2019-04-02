@@ -76,7 +76,7 @@ Test @cdtn/api:
   dependencies:
     - Prepare .env file
   variables:
-    ELASTICSEARCH_URL: http://elasticsearch:9200
+    ELASTICSEARCH_URL: http://localhost:9200
     ELASTICSEARCH_LOG_LEVEL: info
   before_script:
     # Install docker compose
