@@ -1,7 +1,8 @@
 #
 
 .notify_stage: &notify_stage
-  variable:
+  image: byrnedo/alpine-curl
+  variables:
     DEPLOY_ID_FILE: github_deploy_id
   dependencies: []
 
