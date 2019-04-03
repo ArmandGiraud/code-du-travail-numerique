@@ -1,16 +1,22 @@
 #
 
 .notify_stage: &notify_stage
-  image: byrnedo/alpine-curl
+  image: python:$PYTHON_VERSION
   variables:
     DEPLOY_ID_FILE: github_deploy_id
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - /var/cache/apk
+  before_script:
+    - apk update && apk add curl
   dependencies: []
 
 #
 
-Notify Start:
+Notify Starting Deployment:
   <<: *notify_stage
-  stage: "Notify Starting Deployment"
+  stage: "Build and Push Docker Imaget"
   script:
     - sh ./k8s/scripts/get-deploy-id.sh
   artifacts:
@@ -22,7 +28,7 @@ Notify Fail:
   stage: "Notify Finished Deployment"
   when: on_failure
   dependencies:
-    - Notify Start
+    - Notify Starting Deployment
   script:
     - echo "fail"
     - cat github_deploy_id
@@ -32,7 +38,7 @@ Notify Success:
   stage: "Notify Finished Deployment"
   when: on_success
   dependencies:
-    - Notify Start
+    - Notify Starting Deployment
   script:
     - echo "Success"
     - cat github_deploy_id

@@ -20,7 +20,6 @@ stages:
 - "Prepare"
 - "Code Quality"
 - "Build and Push Docker Image"
-- "Notify Starting Deployment"
 - "Deploy EL Stack"
 - "Notify Finished Deployment"
 - "Create Code du Travail Numerique Elasticsearch Index"
