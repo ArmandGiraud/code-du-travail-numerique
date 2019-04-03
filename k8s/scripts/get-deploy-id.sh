@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
+set -eu -o pipefail
 
 CACHE_RESPONSE=${CACHE_RESPONSE:="/tmp/deploy_payload.json"}
 DEPLOY_ID_FILE=${DEPLOY_ID_FILE:="DEPLOY_ID"}
 
-curl -0 -v \
--X POST https://${GITHUB_TOKEN}@api.github.com/repos/${CI_PROJECT_PATH}/deployments \
+curl -0 \
+"https://${GITHUB_TOKEN}@api.github.com/repos/${CI_PROJECT_PATH}/deployments" \
 -H "Content-Type:application/json" \
--H 'Accept: application/vnd.github.flash-preview+json, application/vnd.github.ant-man-preview+json' \
+-H "Accept: application/vnd.github.flash-preview+json, application/vnd.github.ant-man-preview+json" \
 -o "${CACHE_RESPONSE}" \
 -d @- << EOF
 {
@@ -19,6 +20,10 @@ curl -0 -v \
 }
 EOF
 
-cat "${CACHE_RESPONSE}" | \
-  python -c "import json,sys;obj=json.load(sys.stdin);print(obj.get('id'))" \
-  > "${DEPLOY_ID_FILE}"
+cat "$CACHE_RESPONSE" \
+  | python -c "import json,sys;obj=json.load(sys.stdin);print(obj.get('id'))" \
+  > "$DEPLOY_ID_FILE"
+
+if [[ $(cat DEPLOY_ID_FILE) = "None" ]]; then
+  exit 1;
+fi
