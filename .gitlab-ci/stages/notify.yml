@@ -8,16 +8,16 @@
 
 #
 
-Notify Github Deployment Start:
+Notify Start:
   <<: *notify_stage
   stage: "Notify Starting Deployment"
+  script:
+    - sh -x ./k8s/scripts/get-deploy-id.sh
   artifacts:
     paths:
       - github_deploy_id
-  script:
-    - sh -x k8s/scripts/get-github-deploy-id.sh
 
-Notify Github Deployment Fail:
+Notify Fail:
   <<: *notify_stage
   stage: "Notify Finished Deployment"
   when: on_failure
@@ -27,7 +27,7 @@ Notify Github Deployment Fail:
     - echo "fail"
     - cat github_deploy_id
 
-Notify Github Deployment Success:
+Notify Success:
   <<: *notify_stage
   stage: "Notify Finished Deployment"
   when: on_success
