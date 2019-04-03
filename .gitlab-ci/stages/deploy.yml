@@ -7,6 +7,7 @@
   services:
     - docker:dind
   variables: &deploy_stage_variables
+    ENVIRONMENT: $CI_ENVIRONMENT_NAME
     K8S_SERVER: $K8S_SERVER_DEV
     K8S_CLUSTER_NAME: $K8S_CLUSTER_NAME_DEV
     K8S_NAMESPACE: $K8S_NAMESPACE_DEV
@@ -19,10 +20,12 @@
 
 Deploy Elasticsearch:
   <<: *deploy_stage
+  environment:
+    name: dev
+  except:
+    - master
   variables:
     <<: *deploy_stage_variables
     ES_PORT: $ELASTICSEARCH_PORT
     ES_INTER_NODE: $ELASTICSEARCH_INTER_NODE_PORT
     CDTN_REGISTRY: $CI_REGISTRY_IMAGE
-  except:
-    - master
