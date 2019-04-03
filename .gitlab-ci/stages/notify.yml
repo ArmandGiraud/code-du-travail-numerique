@@ -16,7 +16,7 @@
 
 Notify Starting Deployment:
   <<: *notify_stage
-  stage: "Build and Push Docker Image"
+  stage: "Registration"
   script:
     - sh ./k8s/scripts/get-deploy-id.sh
   artifacts:

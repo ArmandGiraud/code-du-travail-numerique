@@ -19,7 +19,7 @@ include:
 stages:
 - "Prepare"
 - "Code Quality"
-- "Build and Push Docker Image"
+- "Registration"
 - "Deploy EL Stack"
 - "Notify Finished Deployment"
 - "Create Code du Travail Numerique Elasticsearch Index"

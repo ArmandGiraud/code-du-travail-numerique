@@ -2,7 +2,7 @@
 
 .build_and_push_stage: &build_and_push_stage
   extends: .docker_stage
-  stage: "Build and Push Docker Image"
+  stage: "Registration"
   dependencies: []
   before_script:
     - docker login $CI_REGISTRY -u gitlab-ci-token -p $CI_JOB_TOKEN
