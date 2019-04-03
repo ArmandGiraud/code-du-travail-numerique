@@ -4,12 +4,10 @@
   image: python:$PYTHON_VERSION
   variables:
     DEPLOY_ID_FILE: github_deploy_id
-  cache:
-    key: "$CI_COMMIT_REF_SLUG"
-    paths:
-      - /var/cache/apk
   before_script:
     - apk update && apk add curl
+    - echo $ENVIRONMENT
+    - echo $CI_ENVIRONMENT_NAME
   dependencies: []
 
 #

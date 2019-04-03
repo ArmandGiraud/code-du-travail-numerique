@@ -11,7 +11,6 @@
   services:
     - docker:dind
   variables: &deploy_stage_variables
-    ENVIRONMENT: $CI_ENVIRONMENT_NAME
     K8S_SERVER: $K8S_SERVER_DEV
     K8S_CLUSTER_NAME: $K8S_CLUSTER_NAME_DEV
     K8S_NAMESPACE: $K8S_NAMESPACE_DEV
