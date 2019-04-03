@@ -9,6 +9,7 @@ include:
   - /.gitlab-ci/stages/prepare.yml
   - /.gitlab-ci/stages/quality.yml
   - /.gitlab-ci/stages/build-and-push.yml
+  - /.gitlab-ci/stages/notify.yml
   - /.gitlab-ci/stages/deploy.yml
   #
 
@@ -19,7 +20,9 @@ stages:
 - "Prepare"
 - "Code Quality"
 - "Build and Push Docker Image"
+- "Notify Starting Deployment"
 - "Deploy EL Stack"
+- "Notify Finished Deployment"
 - "Create Code du Travail Numerique Elasticsearch Index"
 - "Deploy Code du Travail Numerique"
 - "Send Url"
