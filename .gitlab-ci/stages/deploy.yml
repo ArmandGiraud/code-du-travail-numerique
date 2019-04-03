@@ -3,6 +3,10 @@
 .deploy_stage: &deploy_stage
   extends: .deploy-elasticsearch-dev-k8s
   stage: "Deploy EL Stack"
+  except:
+    - master
+  environment:
+    name: dev
   dependencies: []
   services:
     - docker:dind
@@ -20,10 +24,6 @@
 
 Deploy Elasticsearch:
   <<: *deploy_stage
-  environment:
-    name: dev
-  except:
-    - master
   variables:
     <<: *deploy_stage_variables
     ES_PORT: $ELASTICSEARCH_PORT
