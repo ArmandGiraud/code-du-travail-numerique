@@ -1,4 +1,0 @@
-.docker-kube-stage:
-  image:
-    name: $CI_REGISTRY/$IMAGE_INFRA_BASE_NAME/docker-kube:latest
-    entrypoint: [""]
