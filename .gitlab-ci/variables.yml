@@ -13,3 +13,4 @@ variables:
   KIBANA_PORT: 5601
   PIP_VERSION: "11.10.1"
   PYTHON_VERSION: 3.6-alpine
+  HASH_BRANCH_NAME: printf "${CI_COMMIT_REF_NAME}" | sha1sum | cut -c1-5

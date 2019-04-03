@@ -38,6 +38,8 @@ Notify Success:
   when: on_success
   dependencies:
     - Notify Starting Deployment
+  variables:
+    URL: http://${HASH_BRANCH_NAME}.code-du-travail-numerique.${CI_ENVIRONMENT_NAME}.factory.social.gouv.fr/
   script:
     - echo "Notify Success to GitHub deployment id '$(cat github_deploy_id)'"
     - sh ./k8s/scripts/send-url.sh $(cat github_deploy_id) success
