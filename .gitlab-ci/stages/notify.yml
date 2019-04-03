@@ -8,8 +8,6 @@
     name: dev
   before_script:
     - apk update && apk add curl
-    - echo $ENVIRONMENT
-    - echo $CI_ENVIRONMENT_NAME
   dependencies: []
 
 #
