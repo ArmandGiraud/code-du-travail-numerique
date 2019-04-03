@@ -6,10 +6,7 @@ set -eu -o pipefail
 DEPLOY_ID="${1}"
 STATE="${2}"
 
-if [[ \
-    -z ${DEPLOY_ID} || \
-    ! ( ${STATE} = "success" || ${STATE} = "failure" ) \
-  ]]; then
+if [[ -z ${DEPLOY_ID} || ! ( ${STATE} = "success" || ${STATE} = "failure" ) ]]; then
   echo -e "$0 <github_deployment_id> <success|failure>"
   exit 128
 fi
