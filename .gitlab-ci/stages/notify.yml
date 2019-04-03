@@ -12,7 +12,7 @@ Notify Start:
   <<: *notify_stage
   stage: "Notify Starting Deployment"
   script:
-    - sh -x ./k8s/scripts/get-deploy-id.sh
+    - sh ./k8s/scripts/get-deploy-id.sh
   artifacts:
     paths:
       - github_deploy_id
