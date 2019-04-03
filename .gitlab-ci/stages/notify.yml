@@ -22,7 +22,7 @@ Notify Fail:
   stage: "Notify Finished Deployment"
   when: on_failure
   dependencies:
-    - Notify Github Deployment Start
+    - Notify Start
   script:
     - echo "fail"
     - cat github_deploy_id
@@ -32,7 +32,7 @@ Notify Success:
   stage: "Notify Finished Deployment"
   when: on_success
   dependencies:
-    - Notify Github Deployment Start
+    - Notify Start
   script:
     - echo "Success"
     - cat github_deploy_id
