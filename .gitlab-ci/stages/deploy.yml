@@ -30,20 +30,13 @@ Deploy Elasticsearch:
     CDTN_REGISTRY: $CI_REGISTRY_IMAGE
 
 create-cdtn-es-index:
+  <<: *deploy_stage
   stage: "Create Code du Travail Numerique Elasticsearch Index"
   extends: .deploy-code-du-travail-data-k8s
   variables:
-    K8S_SERVER: $K8S_SERVER_DEV
-    K8S_CLUSTER_NAME: $K8S_CLUSTER_NAME_DEV
-    K8S_NAMESPACE: $K8S_NAMESPACE_DEV
-    K8S_USERNAME: $K8S_USERNAME_DEV
-    K8S_CONTEXT: $K8S_CONTEXT_DEV
-    K8S_TOKEN: $K8S_TOKEN_DEV
-    IMAGE_TAG: $CI_COMMIT_SHA
-    ES_PORT: ${ELASTICSEARCH_PORT}
+    <<: *deploy_stage_variables
+    ES_PORT: $ELASTICSEARCH_PORT
     CDTN_REGISTRY: $CI_REGISTRY_IMAGE
-  except:
-  - master
 
 Deploy @cdtn/api:
   <<: *deploy_stage
@@ -66,8 +59,4 @@ Deploy @cdtn/frontend:
     ENVIRONMENT: $CI_ENVIRONMENT_NAME
     PORT: $FRONTEND_PORT
     CDTN_REGISTRY: $CI_REGISTRY_IMAGE
-  environment:
-    name: dev
-  except:
-  - master
 
