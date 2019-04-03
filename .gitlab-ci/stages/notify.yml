@@ -4,6 +4,8 @@
   image: python:$PYTHON_VERSION
   variables:
     DEPLOY_ID_FILE: github_deploy_id
+  environment:
+    name: dev
   before_script:
     - apk update && apk add curl
     - echo $ENVIRONMENT
