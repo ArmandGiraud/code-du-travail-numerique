@@ -14,7 +14,7 @@ fi
 #
 
 curl -0 --trace-ascii - \
--X POST "https://${GITHUB_TOKEN}@api.github.com/repos/${CI_PROJECT_PATH}/deployments/${DEPLOY_ID}/statuses" \
+-X POST "https://httpbin.org/post" \
 -H "Content-Type:application/json" \
 -H "Accept: application/vnd.github.flash-preview+json, application/vnd.github.ant-man-preview+json" \
 -d @- << EOF

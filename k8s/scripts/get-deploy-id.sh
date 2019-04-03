@@ -5,7 +5,7 @@ CACHE_RESPONSE=${CACHE_RESPONSE:="/tmp/deploy_payload.json"}
 DEPLOY_ID_FILE=${DEPLOY_ID_FILE:="DEPLOY_ID"}
 
 curl -0 -v \
--X POST "https://${GITHUB_TOKEN}@api.github.com/repos/${CI_PROJECT_PATH}/deployments" \
+-X POST "https://httpbin.org/post" \
 -H "Content-Type:application/json" \
 -H "Accept: application/vnd.github.flash-preview+json, application/vnd.github.ant-man-preview+json" \
 -o "${CACHE_RESPONSE}" \
